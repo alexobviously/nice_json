@@ -1,10 +1,11 @@
 name: nice_json
 description: A nice way to encode nice maps into nice-looking json.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/alexobviously/nice_json
+issue_tracker: https://github.com/alexobviously/nice_json/issues
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
+  sdk: '>=2.19.0 <3.0.0'
 
 dev_dependencies:
   lints: ^2.0.0

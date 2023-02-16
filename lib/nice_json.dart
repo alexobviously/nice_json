@@ -60,6 +60,7 @@ class JsonOptions {
   int get baseIndentSize => depth * indent.length;
   bool get allowCompression => depth >= minDepth;
 
+  /// Creates a copy with some parameters changed.
   JsonOptions copyWith({
     String? indent,
     int? maxContentLength,
@@ -78,6 +79,8 @@ class JsonOptions {
       );
 }
 
+/// Encodes [object] as JSON, given [options].
+/// This is the base level function, but consider using `niceJson()` instead.
 String encodeObject(Object? object, JsonOptions options) {
   if (object is String) return encodeString(object);
   if (object is num) return encodeNumber(object);
@@ -96,9 +99,15 @@ String encodeObject(Object? object, JsonOptions options) {
   throw Exception('Nice JSON couldn\'t encode object: $object');
 }
 
+/// Encodes a string as JSON. Just wraps double quotes around it.
 String encodeString(String object) => '"$object"';
+
+/// Encodes a number as JSON. Just converts it to a string.
 String encodeNumber(num object) => '$object';
 
+/// Encodes a map as JSON. This should probably be a Map<String, dynamic>, but
+/// this is not a constraint that is checked.
+/// Consider using `niceJson()` instead.
 String encodeMap(Map object, JsonOptions options) {
   if (object.isEmpty) return '{}';
   List<String> encoded = object.entries.map((e) => encodeMapEntry(e, options)).toList();
@@ -118,6 +127,7 @@ String encodeMap(Map object, JsonOptions options) {
   return str;
 }
 
+/// Encodes a single map entry as JSON.
 String encodeMapEntry(MapEntry object, JsonOptions options) {
   String key = '"${object.key}": ';
   String value = encodeObject(
@@ -131,6 +141,7 @@ String encodeMapEntry(MapEntry object, JsonOptions options) {
   return '$key$value';
 }
 
+/// Encodes a list as JSON.
 String encodeList(List object, JsonOptions options) {
   if (object.isEmpty) return '[]';
   List<String> encoded = object.map((e) => encodeObject(e, options)).toList();
