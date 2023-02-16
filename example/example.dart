@@ -1,30 +1,27 @@
-import 'dart:convert';
-
 import 'package:nice_json/nice_json.dart';
 
 void main(List<String> args) {
-  // String j = JsonEncoder.withIndent(' ').convert(data);
-  String j = niceJson(data);
-  print(j);
+  String json = niceJson(data, alwaysExpandKeys: ['kittens', 'location2']);
+  print(json);
 }
 
 Map<String, dynamic> data = {
-  'a': 'something',
-  'b': [0, 1],
-  'c': [
+  'a': [0, 1],
+  'b': [
     [0, 1],
     [2, 3],
   ],
-  'd': ['gau', 'saturn', 'yipyip', 'morgana'],
-  'e': [
+  'person': {'first_name': 'Alexander', 'last_name': 'Baker'},
+  'cats': ['gau', 'saturn', 'yipyip', 'morgana'],
+  'catscatscatscatscatscatscatscatscatscatscatscats': ['gau', 'saturn', 'yipyip', 'morgana'],
+  'kittens': ['boy', 'violet', 'pumpkin'],
+  'mixedList': [
     'boy',
     ['violet', 'pumpkin'],
-    ['gau', 'saturn', 'yipyip', 'morgana', 5555555],
+    [1111111, 2222222, 3333333, 4444444, 5555555],
+    {'name': 'saturn', 'age': 3, 'species': 'cat'},
   ],
-  'f': {'x': 0, 'y': -1.5},
-  'g': {
-    'first_name': 'Alexander',
-    'last_name': 'Baker',
-  },
-  'h': 'yololololololololololololdsofglsodfglosflgosflhosflhoslfghoslfgholsgfohsfgsfg',
+  'location': {'x': 0, 'y': -1.5},
+  'location2': {'x': -6.1, 'y': 2},
+  'book': 'a really really really really really long string will obviously not get wrapped at all',
 };
