@@ -139,6 +139,98 @@ Instead of:
 }
 ```
 
+It's possible to access nested keys with dot notation too. Take this data:
+
+```dart
+Map<String, dynamic> data = {
+  'a': {
+    'x': [1, 2],
+    'y': [3, 4],
+  },
+  'b': {
+    'x': [5, 6],
+    'y': [7, 8],
+  },
+};
+String json = niceJson(data, minDepth: 2, alwaysExpandKeys: ['a.x']);
+```
+->
+```json
+{
+ "a": {
+  "x": [
+   1,
+   2
+  ],
+  "y": [3, 4]
+ },
+ "b": {
+  "x": [5, 6],
+  "y": [7, 8]
+ }
+}
+```
+
+Or with a wildcard:
+```dart
+String json = niceJson(data, minDepth: 2, alwaysExpandKeys: ['*.x']);
+```
+->
+```json
+{
+ "a": {
+  "x": [
+   1,
+   2
+  ],
+  "y": [3, 4]
+ },
+ "b": {
+  "x": [
+   5,
+   6
+  ],
+  "y": [7, 8]
+ }
+}
+```
+A double wildcard (`**`) can be used to match multiple levels. For example, `a.*.e` would not match `a.b.c.d.e`, but `a.**.e` would.
+
+List indices also work:
+```dart
+Map<String, dynamic> data = {
+  'a': [
+    [0, 1, 2],
+    [3, 4, 5],
+  ],
+  'b': [
+    [0, 1],
+    [2, 3],
+  ],
+};
+String json = niceJson(data, minDepth: 2, alwaysExpandKeys: ['*.0']);
+```
+->
+```json
+{
+ "a": [
+  [
+   0,
+   1,
+   2
+  ],
+  [3, 4, 5]
+ ],
+ "b": [
+  [
+   0,
+   1
+  ],
+  [2, 3]
+ ]
+}
+```
+
 ## Upcoming Features
 ---
 ### Maximum Nesting
@@ -155,7 +247,3 @@ A desirable feature would be to only allow a certain amount of nesting on a sing
 ```
 
 This will probably be added after Dart 3.0 because it would be nice to do this sort of thing with records.
-
-### Nested Expansion Keys
-
-It would be nice to be able to specify `alwaysExpandKeys` that match a nested key name, like `a.hello`, which would only match the `hello` key under `a`, but not under another parent key. Wildcards or regex could also be allowed.

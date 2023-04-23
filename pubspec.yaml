@@ -1,6 +1,6 @@
 name: nice_json
 description: A nice way to encode nice maps into nice-looking json.
-version: 1.0.0
+version: 1.1.0
 repository: https://github.com/alexobviously/nice_json
 issue_tracker: https://github.com/alexobviously/nice_json/issues
 
