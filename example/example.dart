@@ -1,5 +1,12 @@
 import 'package:nice_json/nice_json.dart';
 
+enum CatColour {
+  black,
+  white,
+  orange,
+  grey;
+}
+
 void main(List<String> args) {
   Map<String, dynamic> data = {
     'a': [0, 1],
@@ -7,6 +14,7 @@ void main(List<String> args) {
       [0, 1],
       [2, 3],
     ],
+    'bools': [true, false],
     'person': {'first_name': 'Alexander', 'last_name': 'Baker'},
     'cats': ['gau', 'saturn', 'yipyip', 'morgana'],
     'catscatscatscatscatscatscatscatscatscatscatscats': [
@@ -20,7 +28,7 @@ void main(List<String> args) {
       'boy',
       ['violet', 'pumpkin'],
       [1111111, 2222222, 3333333, 4444444, 5555555],
-      {'name': 'saturn', 'age': 3, 'species': 'cat'},
+      {'name': 'saturn', 'age': 3, 'species': 'cat', 'colour': CatColour.white},
     ],
     'locations': {
       'loc1': {'x': 0, 'y': -1.5},

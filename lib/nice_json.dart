@@ -103,23 +103,17 @@ class JsonOptions {
 
 /// Encodes [object] as JSON, given [options].
 /// This is the base level function, but consider using `niceJson()` instead.
-String encodeObject(Object? object, JsonOptions options) {
-  if (object is String) return encodeString(object);
-  if (object is num) return encodeNumber(object);
-  if (object is List) {
-    return encodeList(object, options);
-  }
-  if (object is Map) {
-    return encodeMap(object, options);
-  }
-  if (object is MapEntry) {
-    return encodeMapEntry(object, options);
-  }
-  if (identical(object, true)) return 'true';
-  if (identical(object, false)) return 'false';
-  if (object == null) return 'null';
-  throw Exception('Nice JSON couldn\'t encode object: $object');
-}
+String encodeObject(Object? object, JsonOptions options) => switch (object) {
+      String s => encodeString(s),
+      num n => encodeNumber(n),
+      List l => encodeList(l, options),
+      Map m => encodeMap(m, options),
+      MapEntry e => encodeMapEntry(e, options),
+      Enum e => encodeString(e.name),
+      bool b => '$b',
+      null => 'null',
+      _ => throw Exception('Nice JSON couldn\'t encode object: $object'),
+    };
 
 /// Encodes a string as JSON. Just wraps double quotes around it.
 String encodeString(String object) => '"$object"';
@@ -138,7 +132,7 @@ String encodeMap(Map object, JsonOptions options) {
   if (simple.length < options.maxLength && options.allowCompression) {
     return simple;
   }
-  String base = options.baseIndent;
+  String indent = options.baseIndent;
   String str = '${options.indent}[';
   final opts = options.copyWith(
     depth: options.depth + 1,
@@ -146,8 +140,8 @@ String encodeMap(Map object, JsonOptions options) {
   );
   String complex = object.entries
       .map((e) => encodeMapEntry(e, opts))
-      .join(',\n$base${options.indent}');
-  str = '{\n$base${options.indent}$complex\n$base}';
+      .join(',\n$indent${options.indent}');
+  str = '{\n$indent${options.indent}$complex\n$indent}';
   return str;
 }
 
