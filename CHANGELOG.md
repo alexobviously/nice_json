@@ -1,3 +1,6 @@
+### 1.1.2
+- Relaxed the parameter type of the top level `niceJson` function from `Map<String, dynamic>` to just `Map`.
+
 ### 1.1.1
 - Enums will now be encoded with `Enum.name`.
 

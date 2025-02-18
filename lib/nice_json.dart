@@ -8,7 +8,7 @@ import 'dart:math';
 /// Any keys in [alwaysExpandKeys] will have their values expanded, regardless
 /// of line length.
 String niceJson(
-  Map<String, dynamic> data, {
+  Map data, {
   String indent = ' ',
   int maxContentLength = 40,
   int maxLineLength = 80,
