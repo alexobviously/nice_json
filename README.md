@@ -245,5 +245,3 @@ A desirable feature would be to only allow a certain amount of nesting on a sing
  ]
 }
 ```
-
-This will probably be added after Dart 3.0 because it would be nice to do this sort of thing with records.

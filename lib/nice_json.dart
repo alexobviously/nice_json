@@ -155,10 +155,11 @@ String encodeMap(Map object, JsonOptions options) {
 /// Turns out json keys are not meant to be ints, who knew?
 String encodeMapEntry(MapEntry object, JsonOptions options) {
   final rawKey = object.key;
-  if (rawKey is! String) {
-    throw JsonUnsupportedObjectError(rawKey);
-  }
-  final key = '"$rawKey": ';
+  final key = switch (rawKey) {
+    final String s => '"$s": ',
+    _ => throw JsonUnsupportedObjectError(rawKey),
+  };
+
   final path = options.path == null ? rawKey : '${options.path}.$rawKey';
   final value = encodeObject(
     object.value,
