@@ -1,6 +1,7 @@
 ### 1.2.0
 - Bumped Dart SDK to 3.13.7, updated dependencies, lints.
 - Fixed strings not being escaped correctly.
+- Non-finite numbers (`NaN`, `Infinity`, `-Infinity`) now throw, matching `jsonEncode`.
 
 ### 1.1.2
 - Relaxed the parameter type of the top level `niceJson` function from `Map<String, dynamic>` to just `Map`.

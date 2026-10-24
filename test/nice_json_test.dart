@@ -26,4 +26,20 @@ void main() {
       );
     });
   });
+
+  group('numbers', () {
+    test('rejects NaN and infinity', () {
+      for (final value in [
+        double.nan,
+        double.infinity,
+        double.negativeInfinity,
+      ]) {
+        expect(
+          () => niceJson({'n': value}),
+          throwsA(isA<JsonUnsupportedObjectError>()),
+          reason: '$value',
+        );
+      }
+    });
+  });
 }

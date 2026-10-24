@@ -120,8 +120,9 @@ String encodeObject(Object? object, JsonOptions options) => switch (object) {
 /// [jsonEncode] is used here for escaping.
 String encodeString(String object) => jsonEncode(object);
 
-/// Encodes a number as JSON. Just converts it to a string.
-String encodeNumber(num object) => '$object';
+/// Encodes [object] as a JSON number.
+/// Non-finite values throw, as with [jsonEncode].
+String encodeNumber(num object) => jsonEncode(object);
 
 /// Encodes a map as JSON. This should probably be a `Map<String, dynamic>`, but
 /// this is not a constraint that is checked.
