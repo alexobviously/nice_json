@@ -150,11 +150,16 @@ String encodeMap(Map object, JsonOptions options) {
 }
 
 /// Encodes a single map entry as JSON.
+/// A key that is not a [String] throws [JsonUnsupportedObjectError].
+///
+/// Turns out json keys are not meant to be ints, who knew?
 String encodeMapEntry(MapEntry object, JsonOptions options) {
-  final key = '"${object.key}": ';
-  final path = options.path == null
-      ? object.key
-      : '${options.path}.${object.key}';
+  final rawKey = object.key;
+  if (rawKey is! String) {
+    throw JsonUnsupportedObjectError(rawKey);
+  }
+  final key = '"$rawKey": ';
+  final path = options.path == null ? rawKey : '${options.path}.$rawKey';
   final value = encodeObject(
     object.value,
     options.copyWith(

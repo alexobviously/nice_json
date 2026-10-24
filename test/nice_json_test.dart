@@ -42,4 +42,22 @@ void main() {
       }
     });
   });
+
+  group('map keys', () {
+    test('rejects a top-level key that is not a string', () {
+      expect(
+        () => niceJson({1: 'a'}),
+        throwsA(isA<JsonUnsupportedObjectError>()),
+      );
+    });
+
+    test('rejects a nested key that is not a string', () {
+      expect(
+        () => niceJson({
+          'outer': {1: 'a'},
+        }),
+        throwsA(isA<JsonUnsupportedObjectError>()),
+      );
+    });
+  });
 }
