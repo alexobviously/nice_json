@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 /// Encodes [data] as nicely formatted human-readable JSON.
@@ -28,8 +29,8 @@ String niceJson(
 }
 
 RegExp _buildRegex(String pattern, [bool complete = true]) => RegExp(
-      '^(${pattern.replaceAll('**', '(.+)').replaceAll('*', '([^.]+)')})${complete ? '\$' : ''}',
-    );
+  '^(${pattern.replaceAll('**', '(.+)').replaceAll('*', '([^.]+)')})${complete ? '\$' : ''}',
+);
 
 class JsonOptions {
   /// The character used for indentation.
@@ -87,16 +88,15 @@ class JsonOptions {
     List<String>? alwaysExpandKeys,
     int? minDepth,
     String? path,
-  }) =>
-      JsonOptions(
-        indent: indent ?? this.indent,
-        maxContentLength: maxContentLength ?? this.maxContentLength,
-        maxLineLength: maxLineLength ?? this.maxLineLength,
-        depth: depth ?? this.depth,
-        alwaysExpandKeys: alwaysExpandKeys ?? this.alwaysExpandKeys,
-        minDepth: minDepth ?? this.minDepth,
-        path: path ?? this.path,
-      );
+  }) => JsonOptions(
+    indent: indent ?? this.indent,
+    maxContentLength: maxContentLength ?? this.maxContentLength,
+    maxLineLength: maxLineLength ?? this.maxLineLength,
+    depth: depth ?? this.depth,
+    alwaysExpandKeys: alwaysExpandKeys ?? this.alwaysExpandKeys,
+    minDepth: minDepth ?? this.minDepth,
+    path: path ?? this.path,
+  );
 
   JsonOptions extendPath(String key) =>
       copyWith(path: path == null ? key : '$path.$key');
@@ -105,30 +105,32 @@ class JsonOptions {
 /// Encodes [object] as JSON, given [options].
 /// This is the base level function, but consider using `niceJson()` instead.
 String encodeObject(Object? object, JsonOptions options) => switch (object) {
-      final String s => encodeString(s),
-      final num n => encodeNumber(n),
-      final List l => encodeList(l, options),
-      final Map m => encodeMap(m, options),
-      final MapEntry e => encodeMapEntry(e, options),
-      final Enum e => encodeString(e.name),
-      final bool b => '$b',
-      null => 'null',
-      _ => throw Exception('Nice JSON couldn\'t encode object: $object'),
-    };
+  final String s => encodeString(s),
+  final num n => encodeNumber(n),
+  final List l => encodeList(l, options),
+  final Map m => encodeMap(m, options),
+  final MapEntry e => encodeMapEntry(e, options),
+  final Enum e => encodeString(e.name),
+  final bool b => '$b',
+  null => 'null',
+  _ => throw Exception('Nice JSON couldn\'t encode object: $object'),
+};
 
-/// Encodes a string as JSON. Just wraps double quotes around it.
-String encodeString(String object) => '"$object"';
+/// Encodes [object] as a JSON string.
+/// [jsonEncode] is used here for escaping.
+String encodeString(String object) => jsonEncode(object);
 
 /// Encodes a number as JSON. Just converts it to a string.
 String encodeNumber(num object) => '$object';
 
-/// Encodes a map as JSON. This should probably be a Map<String, dynamic>, but
+/// Encodes a map as JSON. This should probably be a `Map<String, dynamic>`, but
 /// this is not a constraint that is checked.
 /// Consider using `niceJson()` instead.
 String encodeMap(Map object, JsonOptions options) {
   if (object.isEmpty) return '{}';
-  final encoded =
-      object.entries.map((e) => encodeMapEntry(e, options)).toList();
+  final encoded = object.entries
+      .map((e) => encodeMapEntry(e, options))
+      .toList();
   final simple = '{${encoded.join(', ')}}';
   if (simple.length < options.maxLength && options.allowCompression) {
     return simple;
@@ -149,8 +151,9 @@ String encodeMap(Map object, JsonOptions options) {
 /// Encodes a single map entry as JSON.
 String encodeMapEntry(MapEntry object, JsonOptions options) {
   final key = '"${object.key}": ';
-  final path =
-      options.path == null ? object.key : '${options.path}.${object.key}';
+  final path = options.path == null
+      ? object.key
+      : '${options.path}.${object.key}';
   final value = encodeObject(
     object.value,
     options.copyWith(
