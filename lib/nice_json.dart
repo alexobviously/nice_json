@@ -28,7 +28,8 @@ String niceJson(
 }
 
 RegExp _buildRegex(String pattern, [bool complete = true]) => RegExp(
-    '^(${pattern.replaceAll('**', '(.+)').replaceAll('*', '([^.]+)')})${complete ? '\$' : ''}');
+      '^(${pattern.replaceAll('**', '(.+)').replaceAll('*', '([^.]+)')})${complete ? '\$' : ''}',
+    );
 
 class JsonOptions {
   /// The character used for indentation.
@@ -104,13 +105,13 @@ class JsonOptions {
 /// Encodes [object] as JSON, given [options].
 /// This is the base level function, but consider using `niceJson()` instead.
 String encodeObject(Object? object, JsonOptions options) => switch (object) {
-      String s => encodeString(s),
-      num n => encodeNumber(n),
-      List l => encodeList(l, options),
-      Map m => encodeMap(m, options),
-      MapEntry e => encodeMapEntry(e, options),
-      Enum e => encodeString(e.name),
-      bool b => '$b',
+      final String s => encodeString(s),
+      final num n => encodeNumber(n),
+      final List l => encodeList(l, options),
+      final Map m => encodeMap(m, options),
+      final MapEntry e => encodeMapEntry(e, options),
+      final Enum e => encodeString(e.name),
+      final bool b => '$b',
       null => 'null',
       _ => throw Exception('Nice JSON couldn\'t encode object: $object'),
     };
@@ -126,19 +127,19 @@ String encodeNumber(num object) => '$object';
 /// Consider using `niceJson()` instead.
 String encodeMap(Map object, JsonOptions options) {
   if (object.isEmpty) return '{}';
-  List<String> encoded =
+  final encoded =
       object.entries.map((e) => encodeMapEntry(e, options)).toList();
-  String simple = '{${encoded.join(', ')}}';
+  final simple = '{${encoded.join(', ')}}';
   if (simple.length < options.maxLength && options.allowCompression) {
     return simple;
   }
-  String indent = options.baseIndent;
+  final indent = options.baseIndent;
   String str = '${options.indent}[';
   final opts = options.copyWith(
     depth: options.depth + 1,
     maxLineLength: options.maxLineLength - options.indent.length,
   );
-  String complex = object.entries
+  final complex = object.entries
       .map((e) => encodeMapEntry(e, opts))
       .join(',\n$indent${options.indent}');
   str = '{\n$indent${options.indent}$complex\n$indent}';
@@ -147,10 +148,10 @@ String encodeMap(Map object, JsonOptions options) {
 
 /// Encodes a single map entry as JSON.
 String encodeMapEntry(MapEntry object, JsonOptions options) {
-  String key = '"${object.key}": ';
-  String path =
+  final key = '"${object.key}": ';
+  final path =
       options.path == null ? object.key : '${options.path}.${object.key}';
-  String value = encodeObject(
+  final value = encodeObject(
     object.value,
     options.copyWith(
       maxLineLength: options.maxLineLength - key.length,
@@ -164,22 +165,22 @@ String encodeMapEntry(MapEntry object, JsonOptions options) {
 /// Encodes a list as JSON.
 String encodeList(List object, JsonOptions options) {
   if (object.isEmpty) return '[]';
-  List<String> encoded = object
+  final encoded = object
       .asMap()
       .entries
       .map((e) => encodeObject(e.value, options.extendPath(e.key.toString())))
       .toList();
-  String simple = '[${encoded.join(', ')}]';
+  final simple = '[${encoded.join(', ')}]';
   if (simple.length < options.maxLength && options.allowCompression) {
     return simple;
   }
-  String base = options.baseIndent;
+  final base = options.baseIndent;
   String str = '${options.indent}[';
   final opts = options.copyWith(
     depth: options.depth + 1,
     maxLineLength: options.maxLineLength - options.indent.length,
   );
-  String complex = object
+  final complex = object
       .asMap()
       .entries
       .map((e) => encodeObject(e.value, opts.extendPath(e.key.toString())))

@@ -1,30 +1,50 @@
-# This file configures the static analysis results for your project (errors,
-# warnings, and lints).
-#
-# This enables the 'recommended' set of lints from `package:lints`.
-# This set helps identify many issues that may lead to problems when running
-# or consuming Dart code, and enforces writing Dart using a single, idiomatic
-# style and format.
-#
-# If you want a smaller set of lints you can change this to specify
-# 'package:lints/core.yaml'. These are just the most critical lints
-# (the recommended set includes the core lints).
-# The core lints are also what is used by pub.dev for scoring packages.
-
 include: package:lints/recommended.yaml
 
-# Uncomment the following section to specify additional rules.
+formatter:
+  trailing_commas: preserve
 
-# linter:
-#   rules:
-#     - camel_case_types
+linter:
+  rules:
+    always_declare_return_types: true
+    avoid_print: true
+    cancel_subscriptions: true
+    combinators_ordering: true
+    constant_identifier_names: true
+    deprecated_member_use_from_same_package: true
+    directives_ordering: true
+    empty_container_bodies: true
+    implicit_call_tearoffs: true
+    library_private_types_in_public_api: false
+    noop_primitive_operations: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+    prefer_single_quotes: true
+    require_trailing_commas: true
+    sort_pub_dependencies: true
+    strict_top_level_inference: true
+    unawaited_futures: true
+    unnecessary_async: true
+    unnecessary_const_in_enum_constructor: true
+    unnecessary_lambdas: true
+    unnecessary_to_list_in_spreads: true
+    use_null_aware_elements: true
+    use_super_parameters: true
+    use_truncating_division: true
 
-# analyzer:
-#   exclude:
-#     - path/to/excluded/files/**
-
-# For more information about the core and recommended set of lints, see
-# https://dart.dev/go/core-lints
-
-# For additional information about configuring this file, see
-# https://dart.dev/guides/language/analysis-options
+analyzer:
+  errors:
+    always_declare_return_types: warning
+    annotate_overrides: warning
+    avoid_init_to_null: warning
+    avoid_print: warning
+    prefer_const_constructors_in_immutables: warning
+    prefer_final_fields: warning
+    prefer_final_locals: warning
+    sort_pub_dependencies: warning
+    strict_top_level_inference: warning
+    unawaited_futures: warning
+    unnecessary_async: warning
+    unnecessary_to_list_in_spreads: warning
+    unrelated_type_equality_checks: warning
+    use_null_aware_elements: warning
+    use_super_parameters: warning

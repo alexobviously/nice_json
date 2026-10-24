@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:nice_json/nice_json.dart';
 
 enum CatColour {
@@ -8,7 +10,7 @@ enum CatColour {
 }
 
 void main(List<String> args) {
-  Map<String, dynamic> data = {
+  final Map<String, dynamic> data = {
     'a': [0, 1],
     'b': [
       [0, 1],
@@ -21,7 +23,7 @@ void main(List<String> args) {
       'gau',
       'saturn',
       'yipyip',
-      'morgana'
+      'morgana',
     ],
     'kittens': ['boy', 'violet', 'pumpkin'],
     'mixedList': [
@@ -50,7 +52,9 @@ void main(List<String> args) {
     ],
   };
 
-  String json = niceJson(data,
-      alwaysExpandKeys: ['kittens', 'locations.loc2', 'people.*.friends']);
+  final json = niceJson(
+    data,
+    alwaysExpandKeys: ['kittens', 'locations.loc2', 'people.*.friends'],
+  );
   print(json);
 }
