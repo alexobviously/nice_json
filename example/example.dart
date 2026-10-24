@@ -2,12 +2,7 @@
 
 import 'package:nice_json/nice_json.dart';
 
-enum CatColour {
-  black,
-  white,
-  orange,
-  grey;
-}
+enum CatColour { black, white, orange, grey }
 
 void main(List<String> args) {
   final Map<String, dynamic> data = {
@@ -36,7 +31,8 @@ void main(List<String> args) {
       'loc1': {'x': 0, 'y': -1.5},
       'loc2': {'x': -6.1, 'y': 2},
     },
-    'book': 'a really really really really really long'
+    'book':
+        'a really really really really really long'
         ' string will obviously not get wrapped at all',
     'people': [
       {
